@@ -5,9 +5,14 @@ import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.servicos.LocacaoService;
 import br.ce.wcaquino.utils.DataUtils;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import java.util.*;
+
+import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
+import static br.ce.wcaquino.utils.DataUtils.obterDataComDiferencaDias;
+import static org.hamcrest.CoreMatchers.*;
 
 class LocacaoServiceTest {
 
@@ -23,7 +28,13 @@ class LocacaoServiceTest {
 
         //verificaçao
         Assert.assertEquals(5.0, locacao.getValor(),0.01);
-        Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
-        Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
+        Assert.assertTrue(isMesmaData(locacao.getDataLocacao(), new Date()));
+        Assert.assertTrue(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)));
+
+        //Estudo assertThat()
+        Assert.assertThat(locacao.getValor(), is(equalTo(5.0)));
+        Assert.assertThat(locacao.getValor(), is(not(6.0)));
+        Assert.assertThat(isMesmaData(locacao.getDataLocacao(), new Date()), CoreMatchers.is(true));
+        Assert.assertThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
     }
 }
