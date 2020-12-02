@@ -6,16 +6,15 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exception.FilmeSemEstoqueException;
 import br.ce.wcaquino.exception.LocadoraException;
 import br.ce.wcaquino.servicos.LocacaoService;
-import br.ce.wcaquino.utils.DataUtils;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.internal.runners.statements.ExpectException;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
-import java.util.*;
+import java.util.Date;
 
 import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
 import static br.ce.wcaquino.utils.DataUtils.obterDataComDiferencaDias;
@@ -24,6 +23,13 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 public class LocacaoServiceTest {
+
+    private LocacaoService service;
+
+    @Before
+    public void setUp() {
+        service = new LocacaoService();
+    }
 
     @Rule
     public ErrorCollector error = new ErrorCollector();
@@ -34,7 +40,7 @@ public class LocacaoServiceTest {
     @Test
     public void testLocacao() throws Exception {
         //cenario
-        LocacaoService service = new LocacaoService();
+
         Usuario usuario = new Usuario("Usuario1");
         Filme filme = new Filme("filme 1", 2, 5.0);
 
@@ -63,7 +69,6 @@ public class LocacaoServiceTest {
     public void testLocacao_filmeSemEstoque() throws Exception {
 
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Usuario1");
         Filme filme = new Filme("filme 1", 0, 5.0);
 
@@ -76,7 +81,6 @@ public class LocacaoServiceTest {
     public void testLocacao_filmeSemEstoque2() {
 
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Usuario1");
         Filme filme = new Filme("filme 1", 0, 5.0);
 
@@ -94,7 +98,6 @@ public class LocacaoServiceTest {
     public void testLocacao_filmeSemEstoque3() throws Exception {
 
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Usuario1");
         Filme filme = new Filme("filme 1", 0, 5.0);
 
@@ -109,7 +112,6 @@ public class LocacaoServiceTest {
     public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
 
         //cenario
-        LocacaoService service = new LocacaoService();
         Filme filme = new Filme("filme 1", 1, 5.0);
 
         //acão
@@ -125,7 +127,6 @@ public class LocacaoServiceTest {
     public void testLocacao_filmeVazio() throws FilmeSemEstoqueException, LocadoraException {
 
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Usuario1");
 
         expection.expect(LocadoraException.class);
