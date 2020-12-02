@@ -15,9 +15,11 @@ import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
 import java.util.Date;
+import java.util.List;
 
 import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
 import static br.ce.wcaquino.utils.DataUtils.obterDataComDiferencaDias;
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -42,7 +44,7 @@ public class LocacaoServiceTest {
         //cenario
 
         Usuario usuario = new Usuario("Usuario1");
-        Filme filme = new Filme("filme 1", 2, 5.0);
+        List<Filme> filme = asList(new Filme("filme 1", 2, 5.0));
 
         //acão
         Locacao locacao = service.alugarFilme(usuario, filme);
@@ -70,7 +72,7 @@ public class LocacaoServiceTest {
 
         //cenario
         Usuario usuario = new Usuario("Usuario1");
-        Filme filme = new Filme("filme 1", 0, 5.0);
+        List<Filme> filme = asList(new Filme("filme 1", 0, 5.0));
 
         //acão
         service.alugarFilme(usuario, filme);
@@ -82,7 +84,7 @@ public class LocacaoServiceTest {
 
         //cenario
         Usuario usuario = new Usuario("Usuario1");
-        Filme filme = new Filme("filme 1", 0, 5.0);
+        List<Filme> filme = asList(new Filme("filme 1", 0, 5.0));
 
         //acão
         try {
@@ -99,7 +101,7 @@ public class LocacaoServiceTest {
 
         //cenario
         Usuario usuario = new Usuario("Usuario1");
-        Filme filme = new Filme("filme 1", 0, 5.0);
+        List<Filme> filme = asList(new Filme("filme 1", 0, 5.0));
 
         expection.expect(Exception.class);
         expection.expectMessage("Filme sem estoque");
@@ -112,7 +114,7 @@ public class LocacaoServiceTest {
     public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
 
         //cenario
-        Filme filme = new Filme("filme 1", 1, 5.0);
+        List<Filme> filme = asList(new Filme("filme 1", 1, 5.0));
 
         //acão
         try {
