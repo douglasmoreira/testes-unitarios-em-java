@@ -6,14 +6,18 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exception.FilmeSemEstoqueException;
 import br.ce.wcaquino.exception.LocadoraException;
 import br.ce.wcaquino.servicos.LocacaoService;
+import br.ce.wcaquino.utils.DataUtils;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +26,7 @@ import static br.ce.wcaquino.utils.DataUtils.obterDataComDiferencaDias;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class LocacaoServiceTest {
@@ -40,9 +45,12 @@ public class LocacaoServiceTest {
     public ExpectedException expection = ExpectedException.none();
 
     @Test
+//    @Ignore // caso precise ignorar o teste
     public void deveAlugarFilme() throws Exception {
-        //cenario
 
+        Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
+
+        //cenario
         Usuario usuario = new Usuario("Usuario1");
         List<Filme> filme = asList(new Filme("filme 1", 2, 5.0));
 
@@ -211,5 +219,24 @@ public class LocacaoServiceTest {
 
         //verificaçao
         assertThat(resultado.getValor(), is(14.0));
+    }
+
+    @Test
+    public void naoDeveDevolverFilmeNoDomingo() throws FilmeSemEstoqueException, LocadoraException {
+
+        Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
+
+        //cenario
+        Usuario usuario = new Usuario("Usuario1");
+        List<Filme> filmes =
+                asList( new Filme("filme 1", 1, 4.0));
+
+        //acão
+        Locacao resultado = service.alugarFilme(usuario, filmes);
+
+        //verificaçao
+        boolean ehSegunda = DataUtils.verificarDiaSemana(resultado.getDataRetorno(), Calendar.MONDAY);
+        assertTrue(ehSegunda);
+
     }
 }
