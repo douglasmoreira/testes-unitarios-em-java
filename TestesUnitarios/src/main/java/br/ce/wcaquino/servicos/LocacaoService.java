@@ -34,9 +34,6 @@ public class LocacaoService {
         locacao.setUsuario(usuario);
         locacao.setDataLocacao(new Date());
         Double valorTotal = 0d;
-        for (Filme filme: filmes) {
-            valorTotal += filme.getPrecoLocacao();
-        }
         locacao.setValor(valorTotal);
 
         //Entrega no dia seguinte
